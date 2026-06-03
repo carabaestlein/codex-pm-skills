@@ -1,6 +1,6 @@
 ---
 name: competitive-market-intel
-description: Use this skill to monitor competitors and market signals for a B2B SaaS product manager, synthesize source-backed insights, and produce a concise market intel digest with PM implications, confidence, and follow-ups.
+description: Use this skill to monitor competitors and market signals for a B2B SaaS product manager, synthesize source-backed insights, and produce a concise market intel digest with noteworthy changes, confidence, sources, and recommended actions.
 ---
 
 # Competitive Market Intel
@@ -9,7 +9,7 @@ description: Use this skill to monitor competitors and market signals for a B2B 
 
 Create a concise, source-backed competitive and market intelligence digest for a B2B SaaS PM.
 
-The digest should help a PM notice meaningful changes early, understand why they matter, and decide whether to investigate, respond, or ignore.
+The digest should help a PM notice meaningful changes early and decide whether to investigate, respond, or ignore.
 
 ## Inputs To Request Or Infer
 
@@ -25,13 +25,15 @@ Use the information available in the user's request, repo, or config. If critica
 ## Core Workflow
 
 1. Identify the market, product surface, ICP, and priority themes.
-2. Collect recent source-backed signals from approved sources.
+2. Collect recent source-backed signals from approved sources, using the configured lookback window when one is provided.
 3. Deduplicate repeated coverage of the same underlying change.
 4. Classify each signal using `references/signal-taxonomy.md`.
 5. Prioritize by novelty, relevance to PM decisions, source quality, and potential impact.
 6. Separate observed facts from interpretation.
-7. Write a digest using `references/digest-format.md`.
-8. Include dates, links, confidence, and recommended follow-ups.
+7. Exclude competitors that have no noteworthy activity in the lookback window.
+8. If no configured competitor has done anything noteworthy, say so clearly using the no-news format in `references/digest-format.md`.
+9. Write a digest using `references/digest-format.md`.
+10. Include dates, links, confidence, and recommended actions when they are worth taking.
 
 ## Source Guidance
 
@@ -43,10 +45,12 @@ Do not overstate weak signals. A pricing page change, release note, job posting,
 
 - Lead with what changed, not with general market commentary.
 - Keep the summary short enough to read over coffee.
-- Name the PM implication for each important item.
+- Keep signal summaries factual and compact; do not add separate "why it matters" or "PM implication" fields.
+- Include only competitors or market actors with noteworthy changes.
+- If nothing noteworthy happened in the last 24 hours, say that directly instead of filling the digest with low-value updates.
 - Cite sources directly.
 - Mark confidence as High, Medium, or Low.
-- Include follow-ups only when they are specific and actionable.
+- Include recommended actions only when they are specific, actionable, and plausibly worth doing this week.
 - Avoid creating false urgency around routine marketing content.
 
 ## Output
@@ -56,9 +60,8 @@ Default to a morning digest with:
 - Subject line
 - Executive summary
 - Top signals
-- PM implications
 - Watchlist
-- Suggested follow-ups
+- Recommended actions
 - Sources
 
 If the user asks for a different format, keep the same reasoning discipline while adapting the output.

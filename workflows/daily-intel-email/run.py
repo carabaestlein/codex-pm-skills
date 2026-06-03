@@ -305,6 +305,7 @@ def build_openai_digest(config: dict[str, Any], items: list[SourceItem]) -> str:
 
 
 def render_prompt(config: dict[str, Any], items: list[SourceItem]) -> str:
+    lookback_hours = int(config.get("digest", {}).get("lookback_hours", 24))
     source_packet = "\n\n".join(
         [
             f"Source {idx + 1}\n"
@@ -319,6 +320,9 @@ def render_prompt(config: dict[str, Any], items: list[SourceItem]) -> str:
     )
     return f"""
 Create a morning market intel digest using the competitive-market-intel skill.
+Only include competitors or market actors with noteworthy activity in the last {lookback_hours} hours.
+Do not include a competitor just because they are listed in the config or because a source was fetched.
+If no configured competitor has a noteworthy signal in the last {lookback_hours} hours, write a short no-news digest that says so clearly.
 
 Company:
 {yaml.safe_dump(config.get("company", {}), sort_keys=False)}
@@ -334,13 +338,16 @@ Use this format:
 - Executive summary
 - Top signals
 - Watchlist
-- Suggested follow-ups
+- Recommended actions
 - Sources
 
 Classify signals as Product, Packaging And Pricing, Positioning, Go-To-Market, Company And Market, or Customer Sentiment.
-Separate facts from PM implications.
+Keep the digest short and factual.
+Do not include separate "why it matters" or "PM implication" fields.
 Mark confidence as High, Medium, or Low.
 Do not invent source details. If sources are weak or unavailable, say so.
+Treat undated source pages as low-confidence unless the text clearly indicates a recent change.
+Exclude routine marketing, evergreen content, and unchanged pages from Top signals.
 
 Source packet:
 {source_packet or "No source items were collected."}
@@ -350,32 +357,33 @@ Source packet:
 def build_fallback_digest(config: dict[str, Any], items: list[SourceItem]) -> str:
     company = config.get("company", {}).get("name", "your company")
     today = dt.date.today().isoformat()
+    lookback_hours = int(config.get("digest", {}).get("lookback_hours", 24))
     max_items = int(config.get("digest", {}).get("max_top_signals", 5))
     selected = items[:max_items]
 
     lines = [
-        f"Subject: Morning Market Intel: {company} source scan",
+        f"Subject: Morning Market Intel: {company} source scan needs review",
         "",
         "## Executive Summary",
         "",
     ]
     if selected:
         lines.append(f"- Collected {len(items)} source item(s) on {today}.")
-        lines.append("- OpenAI digest generation was not enabled, so this is a source-summary preview.")
-        lines.append("- Review the source summaries below and rerun with `OPENAI_API_KEY` for PM synthesis.")
+        lines.append("- OpenAI digest generation was not enabled, so this run did not assess whether changes are noteworthy.")
+        lines.append(f"- Review the source summaries below or rerun with `OPENAI_API_KEY` to identify noteworthy activity in the last {lookback_hours} hours.")
     else:
+        lines[0] = "Subject: Morning Market Intel: No noteworthy competitor updates"
         lines.append(f"- No source items were collected on {today}.")
+        lines.append(f"- No noteworthy competitor activity was found for the last {lookback_hours} hours based on the available sources.")
 
-    lines.extend(["", "## Top Signals", ""])
+    lines.extend(["", "## Collected Sources Needing Review", ""])
     for idx, item in enumerate(selected, start=1):
         lines.extend(
             [
                 f"### {idx}. {item.owner}: {item.title}",
                 "",
                 "- **Signal type:** Unclassified",
-                f"- **What changed:** {first_sentence(item.summary)}",
-                "- **Why it matters:** Needs PM review.",
-                "- **PM implication:** Rerun with OpenAI enabled or inspect the source manually.",
+                f"- **What happened:** {first_sentence(item.summary)}",
                 "- **Confidence:** Low",
                 f"- **Sources:** {item.url}",
                 "",
@@ -383,7 +391,7 @@ def build_fallback_digest(config: dict[str, Any], items: list[SourceItem]) -> st
         )
 
     if not selected:
-        lines.extend(["No top signals available.", ""])
+        lines.extend(["No collected sources require review.", ""])
 
     lines.extend(["## Watchlist", ""])
     for item in items[max_items : max_items + 5]:
@@ -391,9 +399,9 @@ def build_fallback_digest(config: dict[str, Any], items: list[SourceItem]) -> st
     if len(items) <= max_items:
         lines.append("- No additional watchlist items.")
 
-    lines.extend(["", "## Suggested Follow-Ups", ""])
+    lines.extend(["", "## Recommended Actions", ""])
     lines.append("- Replace placeholder sources with real competitor and market URLs.")
-    lines.append("- Add `OPENAI_API_KEY` to generate synthesized PM implications.")
+    lines.append("- Add `OPENAI_API_KEY` to identify noteworthy activity automatically.")
 
     lines.extend(["", "## Sources", ""])
     for item in items:

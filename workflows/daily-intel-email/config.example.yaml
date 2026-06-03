@@ -41,6 +41,7 @@ digest:
   send_time: "08:00"
   timezone: "Europe/London"
   audience: "Product leadership"
+  lookback_hours: 24
   max_top_signals: 5
 
 delivery:
