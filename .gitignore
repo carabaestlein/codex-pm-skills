@@ -1,9 +1,46 @@
 .DS_Store
+
+# Local environment and secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+private/
+
+# Private workflow configs
+config.yaml
+config.yml
+*.local.yaml
+*.local.yml
+*.private.yaml
+*.private.yml
+workflows/**/config.yaml
+workflows/**/config.yml
+workflows/**/config.local.yaml
+workflows/**/config.local.yml
+workflows/**/config.private.yaml
+workflows/**/config.private.yml
+!workflows/**/config.example.yaml
+
+# Generated digests, source snapshots, and runtime state
 outputs/
 work/
+data/
+state/
+snapshots/
+logs/
+*.log
+
+# Python and local tooling
+.venv/
+venv/
 .pycache/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
