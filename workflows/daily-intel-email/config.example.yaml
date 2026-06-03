@@ -1,0 +1,49 @@
+# Copy this file and replace placeholder values with your own market context.
+
+company:
+  name: "Acme"
+  product: "Customer support automation platform"
+  category: "B2B SaaS customer support"
+  icp:
+    - "VP Support at mid-market SaaS companies"
+    - "Support operations leaders"
+
+competitors:
+  - name: "Competitor A"
+    priority: "high"
+    sources:
+      - label: "Blog"
+        url: "https://example.com/blog"
+      - label: "Changelog"
+        url: "https://example.com/changelog"
+      - label: "Pricing"
+        url: "https://example.com/pricing"
+  - name: "Competitor B"
+    priority: "medium"
+    sources:
+      - label: "Release notes"
+        url: "https://example.com/releases"
+
+market_sources:
+  - label: "Industry publication"
+    url: "https://example.com/news"
+  - label: "Review site category"
+    url: "https://example.com/reviews"
+
+themes:
+  - "AI agent launches"
+  - "Enterprise security and compliance"
+  - "Pricing and packaging changes"
+  - "CRM and helpdesk integrations"
+
+digest:
+  cadence: "weekdays"
+  send_time: "08:00"
+  timezone: "Europe/London"
+  audience: "Product leadership"
+  max_top_signals: 5
+
+delivery:
+  channel: "email"
+  to: "you@example.com"
+  from: "pm-intel@example.com"

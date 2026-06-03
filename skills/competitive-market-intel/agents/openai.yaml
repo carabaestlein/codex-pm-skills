@@ -1,0 +1,7 @@
+interface:
+  display_name: "Competitive Market Intel"
+  short_description: "Morning competitor and market digest"
+  default_prompt: "Use $competitive-market-intel to create a concise morning market intel digest for my B2B SaaS product."
+
+policy:
+  allow_implicit_invocation: true
