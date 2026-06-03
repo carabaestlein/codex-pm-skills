@@ -1,0 +1,7 @@
+interface:
+  display_name: "Competitor Source Discovery"
+  short_description: "Find competitor URLs to monitor"
+  default_prompt: "Use $competitor-source-discovery to find monitoring sources for these B2B SaaS competitors."
+
+policy:
+  allow_implicit_invocation: true

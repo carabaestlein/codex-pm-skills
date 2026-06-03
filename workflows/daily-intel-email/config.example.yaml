@@ -1,41 +1,74 @@
-# Copy this file and replace placeholder values with your own market context.
+# Copy this file to config.local.yaml and replace placeholder values.
+# Competitor source URLs can be left empty; $competitor-source-discovery
+# can fill them in before the daily intel email workflow runs.
+#
+# Minimum required fields:
+# - company.category
+# - competitors[].name
+# - delivery.to
+# - delivery.from
+#
+# Everything else is optional context or workflow tuning.
+#
+# Minimal required example:
+#
+# company:
+#   category: "B2B SaaS customer support"
+#
+# competitors:
+#   - name: "Competitor A"
+#
+# delivery:
+#   to: "you@example.com"
+#   from: "pm-intel@example.com"
 
 company:
+  # Optional, but useful in the digest.
   name: "Acme"
+  # Optional, but useful for interpreting competitor signals.
   product: "Customer support automation platform"
+  # Required. This is the main market/category context.
   category: "B2B SaaS customer support"
+  # Optional. Helps with relevance and prioritization.
   icp:
     - "VP Support at mid-market SaaS companies"
     - "Support operations leaders"
 
 competitors:
+  # Required: name.
+  # Optional: priority. Defaults can be inferred.
+  # Optional: sources. Leave empty and Codex can discover them.
+  #
+  # Source format, if you already know a URL:
+  #
+  # sources:
+  #   - label: "Blog"
+  #     url: "https://example.com/blog"
+  #   - label: "Changelog"
+  #     url: "https://example.com/changelog"
+  #
   - name: "Competitor A"
     priority: "high"
-    sources:
-      - label: "Blog"
-        url: "https://example.com/blog"
-      - label: "Changelog"
-        url: "https://example.com/changelog"
-      - label: "Pricing"
-        url: "https://example.com/pricing"
+    sources: []
   - name: "Competitor B"
     priority: "medium"
-    sources:
-      - label: "Release notes"
-        url: "https://example.com/releases"
+    sources: []
 
+# Optional. Codex can suggest market sources, or this can be left empty.
 market_sources:
   - label: "Industry publication"
     url: "https://example.com/news"
   - label: "Review site category"
     url: "https://example.com/reviews"
 
+# Optional. Helps the digest focus on the signals the PM cares about.
 themes:
   - "AI agent launches"
   - "Enterprise security and compliance"
   - "Pricing and packaging changes"
   - "CRM and helpdesk integrations"
 
+# Optional. Defaults are reasonable for a weekday morning digest.
 digest:
   cadence: "weekdays"
   send_time: "08:00"
@@ -45,6 +78,9 @@ digest:
   max_top_signals: 5
 
 delivery:
+  # Required if email delivery will be enabled.
   channel: "email"
+  # Required.
   to: "you@example.com"
+  # Required.
   from: "pm-intel@example.com"
