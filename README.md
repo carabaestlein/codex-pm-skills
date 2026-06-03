@@ -55,4 +55,4 @@ python3 workflows/daily-intel-email/run.py \
 4. Use `workflows/daily-intel-email/automation-prompt.md` as the prompt for a Codex automation.
 5. Once the digest shape feels useful, add real delivery credentials and run with `--send-email`.
 
-Keep private company context, API keys, inbox details, and competitor lists out of this public repo unless you intentionally want to share them.
+Private company context, API keys, inbox details, and non-public competitor lists should live in a private config or automation environment, not in a public Git repo.
