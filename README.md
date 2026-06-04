@@ -9,25 +9,6 @@ The repo is organized around two related ideas:
 
 ## Current Skills
 
-### Competitor Source Discovery
-
-Path: `skills/competitor-source-discovery`
-
-Use this skill to find the best public URLs to monitor for each competitor and update the daily intel email config.
-
-Good starting prompt:
-
-```text
-Use $competitor-source-discovery to build monitoring sources for <category>. Competitors: <names>.
-```
-
-Minimum useful input:
-
-```text
-Category: <product category>
-Competitors: <competitor names>
-```
-
 ### Competitive Market Intel
 
 Path: `skills/competitive-market-intel`
@@ -40,15 +21,41 @@ Good starting prompt:
 Use $competitive-market-intel to create a morning market intel digest for my B2B SaaS product.
 ```
 
+Supporting setup skill:
+
+`competitor-source-discovery` helps the competitive market intel workflow fill in missing competitor monitoring URLs. It is primarily used to update `workflows/daily-intel-email/config.local.yaml` before the daily digest runs, so PMs only need to provide product category and competitor names.
+
+Example setup prompt:
+
+```text
+Use $competitor-source-discovery to fill missing source URLs for the daily intel email config.
+```
+
+### Release Notes And Social
+
+Path: `skills/release-notes-and-social`
+
+Use this skill to turn technical feature documentation into release notes and social posts using product, ICP, audience, tone, and channel context from a config.
+
+Good starting prompt:
+
+```text
+Use $release-notes-and-social to draft launch copy from <technical doc path> using <config path>.
+```
+
 ## Repo Structure
 
 ```text
 skills/
+  competitive-market-intel/
+    SKILL.md
+    agents/openai.yaml
+    references/
   competitor-source-discovery/
     SKILL.md
     agents/openai.yaml
     references/
-  competitive-market-intel/
+  release-notes-and-social/
     SKILL.md
     agents/openai.yaml
     references/
@@ -58,8 +65,11 @@ workflows/
     config.example.yaml
     requirements.txt
     run.py
+  launch-comms/
+    config.example.yaml
 examples/
   daily-intel-email-digest.md
+  release-notes-and-social-output.md
 ```
 
 ## Getting Started

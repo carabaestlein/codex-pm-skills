@@ -1,0 +1,7 @@
+interface:
+  display_name: "Release Notes And Social"
+  short_description: "Draft launch copy from technical docs"
+  default_prompt: "Use $release-notes-and-social to draft release notes and social posts from this technical feature documentation."
+
+policy:
+  allow_implicit_invocation: true
