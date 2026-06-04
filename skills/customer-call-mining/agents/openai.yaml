@@ -1,0 +1,7 @@
+interface:
+  display_name: "Customer Call Mining"
+  short_description: "Mine calls for PM insights"
+  default_prompt: "Use $customer-call-mining to analyze these customer and sales call transcripts for themes, use cases, requirements, and product feedback."
+
+policy:
+  allow_implicit_invocation: true

@@ -43,6 +43,18 @@ Good starting prompt:
 Use $release-notes-and-social to draft launch copy from <technical doc path> using <config path>.
 ```
 
+### Customer Call Mining
+
+Path: `skills/customer-call-mining`
+
+Use this skill to analyze customer, sales, CS, or research call transcripts for themes, use cases, requirements, and concrete product feedback, with impact and confidence attributes.
+
+Good starting prompt:
+
+```text
+Use $customer-call-mining to analyze transcripts in <path> using config.local.yaml and workflows/call-mining/config.local.yaml.
+```
+
 ## Repo Structure
 
 ```text
@@ -60,6 +72,10 @@ skills/
     SKILL.md
     agents/openai.yaml
     references/
+  customer-call-mining/
+    SKILL.md
+    agents/openai.yaml
+    references/
 workflows/
   daily-intel-email/
     automation-prompt.md
@@ -68,9 +84,12 @@ workflows/
     run.py
   launch-comms/
     config.example.yaml
+  call-mining/
+    config.example.yaml
 examples/
   daily-intel-email-digest.md
   release-notes-and-social-output.md
+  customer-call-mining-output.md
 ```
 
 ## Global PM Context
@@ -118,6 +137,18 @@ Example prompt:
 
 ```text
 Use $release-notes-and-social to draft launch copy from docs/feature-spec.md using config.local.yaml and workflows/launch-comms/config.local.yaml.
+```
+
+## Customer Call Mining
+
+1. Create the root `config.local.yaml` if it does not already exist.
+2. Copy `workflows/call-mining/config.example.yaml` to a private ignored config such as `workflows/call-mining/config.local.yaml`.
+3. Ask Codex to use `$customer-call-mining` with one transcript or a folder of transcripts.
+
+Example prompt:
+
+```text
+Use $customer-call-mining to analyze transcripts in calls/ using config.local.yaml and workflows/call-mining/config.local.yaml.
 ```
 
 Private company context, API keys, inbox details, and non-public competitor lists should live in a private config or automation environment, not in a public Git repo.

@@ -1,0 +1,31 @@
+# Copy this file to config.local.yaml and replace placeholder values.
+# Shared product, ICP, positioning, and voice context should live in the root
+# config.local.yaml copied from config.example.yaml.
+#
+# Minimum required fields:
+# - global_config
+#
+# Everything else is optional analysis tuning.
+
+global_config: "config.local.yaml"
+
+analysis:
+  # Optional. If omitted, Codex infers single-call vs batch mode from the input.
+  mode: "auto"
+  # Optional. Use to keep output concise.
+  max_rows_per_section: 10
+  # Optional. Set to true when exact language matters.
+  include_short_quotes: false
+
+focus:
+  # Optional. Leave empty to analyze all product areas.
+  product_areas: []
+  # Optional. Helps prioritize impact.
+  strategic_priorities:
+    - "Improve enterprise admin workflows"
+    - "Reduce onboarding friction"
+
+source_metadata:
+  # Optional. Use when transcripts do not include this metadata.
+  default_call_type: "Unknown"
+  default_segment: "Unknown"
