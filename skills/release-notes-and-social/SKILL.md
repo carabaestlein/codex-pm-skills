@@ -16,7 +16,8 @@ The output should preserve technical truth while making the feature understandab
 Minimize user input. The minimum useful input is:
 
 - Technical documentation, PRD, engineering notes, or implementation summary
-- Config path, usually `workflows/launch-comms/config.local.yaml`
+- Global config path, usually `config.local.yaml`
+- Optional launch comms config path, usually `workflows/launch-comms/config.local.yaml`
 
 Infer from the config when possible:
 
@@ -32,13 +33,14 @@ Ask follow-up questions only when missing context would create risky or inaccura
 ## Workflow
 
 1. Read the technical source material.
-2. Read the launch comms config if provided.
-3. Extract the factual feature change, user-visible behavior, limits, prerequisites, and rollout status.
-4. Separate confirmed facts from assumptions.
-5. Choose output formats using `references/output-formats.md`.
-6. Apply audience and tone guidance from `references/audience-and-tone.md`.
-7. Draft concise release notes and social posts.
-8. Flag open questions, risky claims, or missing launch details.
+2. Read the global config if provided.
+3. Read the launch comms config if provided.
+4. Extract the factual feature change, user-visible behavior, limits, prerequisites, and rollout status.
+5. Separate confirmed facts from assumptions.
+6. Choose output formats using `references/output-formats.md`.
+7. Apply audience and tone guidance from `references/audience-and-tone.md`.
+8. Draft concise release notes and social posts.
+9. Flag open questions, risky claims, or missing launch details.
 
 ## Quality Bar
 
@@ -47,7 +49,7 @@ Ask follow-up questions only when missing context would create risky or inaccura
 - Prefer specific user-visible changes over generic value statements.
 - Keep copy crisp; do not turn release notes into a marketing essay.
 - Include prerequisites, plan availability, beta status, or rollout constraints when relevant.
-- Use the user's product terminology from the config.
+- Use product terminology from the global config.
 - If the technical docs are ambiguous, include an `Open Questions` section rather than guessing.
 
 ## Output

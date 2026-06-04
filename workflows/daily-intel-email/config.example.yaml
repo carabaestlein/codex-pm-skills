@@ -1,9 +1,12 @@
 # Copy this file to config.local.yaml and replace placeholder values.
+# Shared product, ICP, positioning, and voice context should live in the root
+# config.local.yaml copied from config.example.yaml.
+#
 # Competitor source URLs can be left empty; $competitor-source-discovery
 # can fill them in before the daily intel email workflow runs.
 #
 # Minimum required fields:
-# - company.category
+# - global_config
 # - competitors[].name
 # - delivery.to
 # - delivery.from
@@ -12,8 +15,7 @@
 #
 # Minimal required example:
 #
-# company:
-#   category: "B2B SaaS customer support"
+# global_config: "config.local.yaml"
 #
 # competitors:
 #   - name: "Competitor A"
@@ -22,17 +24,7 @@
 #   to: "you@example.com"
 #   from: "pm-intel@example.com"
 
-company:
-  # Optional, but useful in the digest.
-  name: "Acme"
-  # Optional, but useful for interpreting competitor signals.
-  product: "Customer support automation platform"
-  # Required. This is the main market/category context.
-  category: "B2B SaaS customer support"
-  # Optional. Helps with relevance and prioritization.
-  icp:
-    - "VP Support at mid-market SaaS companies"
-    - "Support operations leaders"
+global_config: "config.local.yaml"
 
 competitors:
   # Required: name.
@@ -60,13 +52,6 @@ market_sources:
     url: "https://example.com/news"
   - label: "Review site category"
     url: "https://example.com/reviews"
-
-# Optional. Helps the digest focus on the signals the PM cares about.
-themes:
-  - "AI agent launches"
-  - "Enterprise security and compliance"
-  - "Pricing and packaging changes"
-  - "CRM and helpdesk integrations"
 
 # Optional. Defaults are reasonable for a weekday morning digest.
 digest:

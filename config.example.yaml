@@ -1,0 +1,61 @@
+# Copy this file to config.local.yaml and replace placeholder values.
+# This global config contains PM context that can be reused across skills and
+# workflows. Workflow-specific configs should only contain extra inputs needed
+# for that workflow.
+#
+# Minimum recommended fields:
+# - product.name
+# - product.category
+# - audience.primary_icp
+#
+# Minimal example:
+#
+# product:
+#   name: "Acme"
+#   category: "B2B SaaS customer support"
+#
+# audience:
+#   primary_icp: "VP Support at mid-market SaaS companies"
+
+product:
+  # Recommended.
+  name: "Acme"
+  # Recommended.
+  category: "B2B SaaS customer support"
+  # Optional. Helps maintain consistent naming across outputs.
+  terminology:
+    customer: "customer"
+    user: "agent"
+    admin: "admin"
+
+audience:
+  # Recommended.
+  primary_icp: "VP Support at mid-market SaaS companies"
+  # Optional.
+  personas:
+    - "Support operations leader"
+    - "Support admin"
+    - "Support agent"
+
+positioning:
+  # Optional. Helps keep generated outputs aligned to the product narrative.
+  core_value: "Help support teams resolve customer issues faster without losing control of quality."
+  # Optional. Used by competitive intel and launch comms to focus attention.
+  themes:
+    - "AI agent launches"
+    - "Enterprise security and compliance"
+    - "Pricing and packaging changes"
+    - "CRM and helpdesk integrations"
+  # Optional. Claims or phrases to avoid unless directly supported by source material.
+  avoid_claims:
+    - "fully autonomous"
+    - "guaranteed deflection"
+    - "SOC 2 compliant"
+
+voice:
+  # Optional. Defaults to clear, specific, and low-hype.
+  tone: "clear, specific, practical, low-hype"
+  banned_phrases:
+    - "game-changing"
+    - "unlock"
+    - "seamless"

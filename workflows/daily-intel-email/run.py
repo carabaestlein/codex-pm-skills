@@ -32,6 +32,7 @@ except ImportError:  # Feed parsing falls back to the standard library.
 
 DEFAULT_TIMEOUT_SECONDS = 20
 USER_AGENT = "codex-pm-skills/0.1 (+https://github.com)"
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 @dataclass
@@ -80,12 +81,80 @@ class SimpleHTMLExtractor(html.parser.HTMLParser):
             self.paragraph_parts.append(text)
 
 
-def load_config(path: Path) -> dict[str, Any]:
+def load_yaml(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         data = yaml.safe_load(handle)
     if not isinstance(data, dict):
         raise ValueError(f"Config must be a YAML mapping: {path}")
     return data
+
+
+def load_config(path: Path) -> dict[str, Any]:
+    workflow_config = load_yaml(path)
+    global_config_path = resolve_global_config_path(path, workflow_config)
+    if global_config_path and global_config_path.exists():
+        merged = deep_merge(load_yaml(global_config_path), workflow_config)
+    else:
+        merged = workflow_config
+    return normalize_config(merged)
+
+
+def resolve_global_config_path(workflow_path: Path, workflow_config: dict[str, Any]) -> Optional[Path]:
+    configured = workflow_config.get("global_config")
+    if configured:
+        candidate = Path(str(configured)).expanduser()
+        if not candidate.is_absolute():
+            candidate = REPO_ROOT / candidate
+        if not candidate.exists() and candidate.name == "config.local.yaml":
+            example = candidate.with_name("config.example.yaml")
+            if example.exists():
+                return example
+        return candidate
+
+    default_local = REPO_ROOT / "config.local.yaml"
+    if default_local.exists():
+        return default_local
+    default_example = REPO_ROOT / "config.example.yaml"
+    if default_example.exists():
+        return default_example
+    return None
+
+
+def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(base)
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = deep_merge(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def normalize_config(config: dict[str, Any]) -> dict[str, Any]:
+    product = config.get("product", {}) or {}
+    audience = config.get("audience", {}) or {}
+    positioning = config.get("positioning", {}) or {}
+
+    company = dict(config.get("company", {}) or {})
+    company.setdefault("name", product.get("name"))
+    company.setdefault("category", product.get("category"))
+    if product.get("name") and not company.get("product"):
+        company["product"] = product.get("name")
+
+    icp = company.get("icp")
+    if not icp:
+        inferred_icp = []
+        if audience.get("primary_icp"):
+            inferred_icp.append(audience["primary_icp"])
+        inferred_icp.extend(audience.get("personas", []) or [])
+        if inferred_icp:
+            company["icp"] = inferred_icp
+
+    if company:
+        config["company"] = company
+    if not config.get("themes") and positioning.get("themes"):
+        config["themes"] = positioning["themes"]
+    return config
 
 
 def collect_sources(config: dict[str, Any], limit_per_source: int) -> list[SourceItem]:

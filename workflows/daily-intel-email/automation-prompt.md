@@ -1,10 +1,12 @@
 Use $competitor-source-discovery and $competitive-market-intel to run the daily intel email workflow for this repo.
 
-Use `workflows/daily-intel-email/config.local.yaml` when it exists. Otherwise, create it from `workflows/daily-intel-email/config.example.yaml` and treat it as the private working config.
+Use root `config.local.yaml` for shared product, ICP, positioning, and voice context. If it does not exist, create it from `config.example.yaml`.
+
+Use `workflows/daily-intel-email/config.local.yaml` for daily-intel-specific settings. If it does not exist, create it from `workflows/daily-intel-email/config.example.yaml` and treat it as the private working config.
 
 Before running the digest:
 
-1. Inspect the private config.
+1. Inspect the root private config and the daily-intel private config.
 2. If any competitor has no `sources`, an empty `sources` list, or placeholder `example.com` URLs, use $competitor-source-discovery to find public monitoring URLs.
 3. Update the private config in place with the discovered URLs.
 4. Preserve existing company, digest, delivery, theme, competitor, and user-provided source settings.

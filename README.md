@@ -46,6 +46,7 @@ Use $release-notes-and-social to draft launch copy from <technical doc path> usi
 ## Repo Structure
 
 ```text
+config.example.yaml
 skills/
   competitive-market-intel/
     SKILL.md
@@ -72,12 +73,29 @@ examples/
   release-notes-and-social-output.md
 ```
 
-## Getting Started
+## Global PM Context
 
-1. Copy `workflows/daily-intel-email/config.example.yaml` to a private ignored config such as `workflows/daily-intel-email/config.local.yaml`.
-2. In the private config, provide the product category, competitor names, and delivery details. Source URLs can be left empty.
-3. Ask Codex to use `$competitor-source-discovery` to fill in missing source URLs in the private config.
-4. Run the daily intel email workflow locally:
+Shared product, market, ICP, positioning, terminology, and voice settings live in the root config:
+
+```text
+config.local.yaml
+```
+
+Create it by copying:
+
+```text
+config.example.yaml
+```
+
+Workflow-specific configs should only contain the extra inputs for that workflow.
+
+## Daily Intel Email
+
+1. Create the root `config.local.yaml` if it does not already exist.
+2. Copy `workflows/daily-intel-email/config.example.yaml` to a private ignored config such as `workflows/daily-intel-email/config.local.yaml`.
+3. In the daily intel config, provide competitor names and delivery details. Source URLs can be left empty.
+4. Ask Codex to use `$competitor-source-discovery` to fill in missing source URLs in the private config.
+5. Run the daily intel email workflow locally:
 
 ```bash
 python3 -m pip install -r workflows/daily-intel-email/requirements.txt
@@ -86,7 +104,20 @@ python3 workflows/daily-intel-email/run.py \
   --output outputs/daily-intel-email.md
 ```
 
-5. Use `workflows/daily-intel-email/automation-prompt.md` as the prompt for a Codex automation.
-6. Once the digest shape feels useful, add real delivery credentials and run with `--send-email`.
+6. Use `workflows/daily-intel-email/automation-prompt.md` as the prompt for a Codex automation.
+7. Once the digest shape feels useful, add real delivery credentials and run with `--send-email`.
+
+## Launch Comms Drafting
+
+1. Create the root `config.local.yaml` if it does not already exist.
+2. Copy `workflows/launch-comms/config.example.yaml` to a private ignored config such as `workflows/launch-comms/config.local.yaml`.
+3. In the launch comms config, choose output channels and add links if useful.
+4. Ask Codex to use `$release-notes-and-social` with the technical feature documentation, the root config, and the launch comms config.
+
+Example prompt:
+
+```text
+Use $release-notes-and-social to draft launch copy from docs/feature-spec.md using config.local.yaml and workflows/launch-comms/config.local.yaml.
+```
 
 Private company context, API keys, inbox details, and non-public competitor lists should live in a private config or automation environment, not in a public Git repo.

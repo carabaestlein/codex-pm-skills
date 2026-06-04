@@ -84,6 +84,7 @@ Do not ask for each source URL. Find them.
 When a config file exists:
 
 - Preserve existing company, digest, delivery, and theme settings.
+- Preserve global product, audience, positioning, and voice settings in root `config.local.yaml`.
 - Preserve user-provided competitor names and priorities.
 - Add or replace missing `sources` arrays for each competitor.
 - Do not overwrite user-provided source URLs unless they are broken, duplicated, or clearly point to the wrong company.

@@ -1,6 +1,6 @@
 # Audience And Tone
 
-Use the config first. If no config is available, default to practical B2B SaaS copy for a knowledgeable but busy reader.
+Use the global config first, then workflow-specific config. If no config is available, default to practical B2B SaaS copy for a knowledgeable but busy reader.
 
 ## Audience Defaults
 
